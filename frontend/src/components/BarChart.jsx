@@ -88,7 +88,7 @@ export default function BarChart({ data = [] }) {
                     color: d.clicks === 0 ? 'var(--text-dim, #6b7280)' : 'var(--accent, #00A3A3)',
                     borderColor: d.clicks === 0 ? 'rgba(255,255,255,0.05)' : 'var(--border)'
                   }}>
-                    {d.clicks} {d.clicks === 1 ? 'click' : 'clicks'}
+                    {d.clicks}
                   </div>
                 </div>
               );
@@ -144,18 +144,19 @@ const styles = {
   },
   barsRow: {
     display:        'flex',
-    justifyContent: 'flex-start', // Left-aligned entry flow sequence
-    gap:            '16px',        // ⚡ Clean, narrow gap distance between daily elements
+    justifyContent: 'space-between',
     height:         '100%',
     position:       'relative',
+    width:          '100%',
   },
   barCol: {
     display:        'flex',
     flexDirection:  'column',
     alignItems:     'center',
-    width:          '55px',        // Fixed structural column limit prevents horizontal stretching wall bug
+    flex:           1,
     height:         '100%',
     position:       'relative',
+    minWidth:       0,
   },
   barFrame: {
     height:         'calc(100% - 44px)', // Deducts padding space allocated for stacked text metadata labels below
@@ -165,7 +166,7 @@ const styles = {
     justifyContent: 'center',
   },
   bar: {
-    width:        '100%',
+    width:        '16px', // fixed width to prevent fat bars
     background:   'var(--accent, #00A3A3)',
     borderRadius: '4px 4px 0 0',
     transition:   'height 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -183,9 +184,10 @@ const styles = {
     borderRadius: '4px',
     padding:    '2px 6px',
     marginTop:  '4px',
-    fontSize:   '0.6rem',
+    fontSize:   '0.65rem',
     whiteSpace: 'nowrap',
     textAlign:  'center',
     fontWeight: 700,
+    minWidth:   '18px',
   }
 };

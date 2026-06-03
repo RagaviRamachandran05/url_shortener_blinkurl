@@ -220,8 +220,36 @@ const getPublicStats = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Shortened link profile not found.' });
     }
 
-    // Fetch related visits history entries from collection
-    const visitHistory = await Visit.find({ urlId: url._id }).sort({ timestamp: -1 });
+    // Daily Click Trends: Group visits by date for the last 30 days
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const dailyTrends = await Visit.aggregate([
+      {
+        $match: {
+          urlId:     url._id,
+          timestamp: { $gte: thirtyDaysAgo },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$timestamp' },
+          },
+          clicks: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+      {
+        $project: {
+          _id:    0,
+          date:   '$_id',
+          clicks: 1,
+        },
+      },
+    ]);
 
     // Enclosed inside the 'data' key block to support frontend destruction assignments
     return res.json({
@@ -232,7 +260,7 @@ const getPublicStats = async (req, res) => {
         longUrl: url.originalUrl, // Explicitly mapped for your frontend layouts
         clicks: url.clicks || 0,
         createdAt: url.createdAt,
-        analytics: visitHistory || [], // Mapped to analytics key for BarChart compatibility
+        analytics: dailyTrends || [], // Mapped to analytics key for BarChart compatibility
       },
     });
   } catch (error) {
