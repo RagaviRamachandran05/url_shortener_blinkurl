@@ -33,7 +33,8 @@ export default function ResetPasswordPage() {
     setLoading(true);
     try {
       // Connect straight to your backend parameter update route
-      await API.post(`/api/auth/reset-password/${token}`, { password });
+    //   await API.post(`/api/auth/reset-password/${token}`, { password });
+    await API.post(`/api/auth/reset-password/${token}`, { password, confirmPassword });
       success('Password reset complete! Please log in.');
       navigate('/login');
     } catch (err) {

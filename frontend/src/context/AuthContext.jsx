@@ -6,6 +6,7 @@ export function AuthProvider({ children }) {
   const [user,    setUser]    = useState(null);
   const [token,   setToken]   = useState(null);
   const [loading, setLoading] = useState(true);
+  const isAuthenticated = Boolean(token || localStorage.getItem('token'));
 
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
@@ -36,7 +37,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, updateUser, isAuthenticated: !!token, loading }}>
+    <AuthContext.Provider value={{ user, token, login, logout, updateUser, isAuthenticated, loading }}>
       {children}
     </AuthContext.Provider>
   );

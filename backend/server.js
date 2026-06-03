@@ -35,5 +35,18 @@ if (!MONGODB_URI) { console.error('❌ MONGODB_URI not set'); process.exit(1); }
 
 mongoose.connect(MONGODB_URI).then(() => {
   console.log('✅ Connected to MongoDB');
-  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
+
+  server.on('error', (err) => {
+    if (err && err.code === 'EADDRINUSE') {
+      console.error(`⚠️ Port ${PORT} is already in use. Stop the other backend process and try again.`);
+      process.exit(1);
+    }
+
+    console.error('❌ Failed to start server:', err.message || err);
+    process.exit(1);
+  });
 }).catch(err => { console.error('❌ MongoDB failed:', err.message); process.exit(1); });
