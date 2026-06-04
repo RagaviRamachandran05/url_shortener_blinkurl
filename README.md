@@ -1,14 +1,24 @@
-# ⚡ LinkSnap — URL Shortener with Analytics
+# BlinkURL 🔗
 
-A full-stack URL shortener built with React, Node.js/Express, and MongoDB.
+BlinkURL is a production-ready, full-stack URL Shortener and Analytics Platform that empowers users to create, optimize, and track shortened URLs with enterprise-grade precision. Featuring a modern, high-contrast dark-mode interface, BlinkURL provides rich telemetry tracking, batch file handling, configurable link expiration dates, and secure shared metrics visibility.
 
 ---
 
-## Folder Structure
+ Live Links & Documentation
 
-```
-url-shortener/
+Frontend Deployment Link:https://url-shortener-blinkurl-7d2t.vercel.app
+Backend Deployment Link :https://url-shortener-blinkurl.onrender.com
+Video Presentation:
+
+---
+
+📂 Folder Structure
+
+```text
+BlinkURL/
 ├── backend/
+│   ├── config/
+│   │   └── db.js
 │   ├── controllers/
 │   │   ├── auth.controller.js
 │   │   ├── url.controller.js
@@ -57,9 +67,7 @@ url-shortener/
     ├── index.html
     ├── package.json
     ├── .env.example
-    └── vite.config.js
-```
-
+    └── vite.config.js     
 ---
 
 ## Database Schema Relationships
@@ -83,17 +91,17 @@ Url  (1) ──< Visit (many) : urlId on Visit references Url._id
 # Backend
 cd backend
 npm install
-cp .env.example .env
+cp .env
 # Fill in MONGODB_URI and JWT_SECRET in .env
 
 # Frontend
 cd ../frontend
 npm install
-cp .env.example .env
+cp .env
 # Set VITE_API_URL=http://localhost:5000
 ```
 
-### 2. Start backend
+2. Start backend
 
 ```bash
 cd backend
@@ -101,7 +109,7 @@ npm run dev
 # Runs on http://localhost:5000
 ```
 
-### 3. Start frontend
+3. Start frontend
 
 ```bash
 cd frontend
@@ -232,3 +240,10 @@ npm run dev
 - [ ] Delete a URL
 - [ ] Try accessing another user's analytics (should get 404)
 - [ ] Log out and verify protected routes redirect to /login
+
+
+Hackathon Submission Details
+ Author Profile: Kavin ([GitHub Profile Link])
+
+ Context: This production system was developed as part of an official hackathon challenge powered by Katomaran Technologies (https://katomaran.com).
+
