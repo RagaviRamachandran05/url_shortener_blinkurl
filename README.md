@@ -8,7 +8,7 @@ BlinkURL is a production-ready, full-stack URL Shortener and Analytics Platform 
 
 Frontend Deployment Link:https://url-shortener-blinkurl-7d2t.vercel.app
 Backend Deployment Link :https://url-shortener-blinkurl.onrender.com
-Video Presentation:
+Video Presentation: https://www.loom.com/share/e6c8962a6f5c4707868beda1aa00f74a
 
 ---
 
