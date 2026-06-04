@@ -9,7 +9,7 @@ export default defineConfig({
     // Proxy API requests to the backend during development
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://url-shortener-blinkurl.onrender.com',
         changeOrigin: true,
       },
     },
