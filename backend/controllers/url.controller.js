@@ -156,7 +156,7 @@ exports.forgotPassword = async (req, res) => {
     });
 
     // Create the reset link pointing to the Vite frontend router views
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const frontendUrl = process.env.VITE_API_URL || 'http://localhost:5173';
     const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
     const mailOptions = {
