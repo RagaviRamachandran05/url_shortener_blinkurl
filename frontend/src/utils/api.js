@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const normalizeBaseUrl = (value) => {
+  if (!value) return 'https://url-shortener-blinkurl.onrender.com';
+  return value.trim().replace(/\/+$/, '').replace(/\/api$/, '');
+};
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
+  baseURL: normalizeBaseUrl(import.meta.env.VITE_API_URL),
   withCredentials: true,
 });
 

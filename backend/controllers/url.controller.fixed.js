@@ -1,7 +1,7 @@
 // backend/controllers/url.controller.fixed.js
 const Url = require('../models/Url.model');
 const Visit = require('../models/Visit.model');
-const { generateUniqueShortCode, isValidUrl } = require('../utils/helpers');
+const { generateUniqueShortCode, isValidUrl, getBaseUrl } = require('../utils/helpers');
 
 const createUrl = async (req, res) => {
   try {
@@ -51,7 +51,7 @@ const createUrl = async (req, res) => {
     }
 
     const url = await Url.create(urlData);
-    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const baseUrl = getBaseUrl(req);
     const shortUrl = `${baseUrl}/${url.customAlias || url.shortCode}`;
 
     return res.status(201).json({
@@ -77,7 +77,7 @@ const createUrl = async (req, res) => {
 const getAllUrls = async (req, res) => {
   try {
     const urls = await Url.find({ userId: req.user._id }).sort({ createdAt: -1 });
-    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const baseUrl = getBaseUrl(req);
 
     const result = urls.map((url) => ({
       id: url._id,
@@ -153,7 +153,7 @@ const bulkCreate = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Maximum 100 URLs per upload.' });
     }
 
-    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const baseUrl = getBaseUrl(req);
     const results = [];
 
     for (const item of urls) {

@@ -91,9 +91,44 @@ const isStrongPassword = (password) => {
   );
 };
 
+const normalizeBaseUrl = (value) => {
+  if (!value) return '';
+  return value.trim().replace(/\/+$/, '').replace(/\/api$/, '');
+};
+
+const getBaseUrl = (req) => {
+  const configuredBaseUrl = normalizeBaseUrl(
+    process.env.BASE_URL ||
+    process.env.PUBLIC_URL ||
+    process.env.RENDER_EXTERNAL_URL ||
+    process.env.NGROK_URL
+  );
+
+  if (configuredBaseUrl) {
+    // Prefer the configured production URL, but ignore localhost-style values
+    // when the request is coming from a deployed host.
+    if (!/localhost:\d+|127\.0\.0\.1:\d+/.test(configuredBaseUrl)) {
+      return configuredBaseUrl;
+    }
+  }
+
+  const forwardedProto =
+    req.headers['x-forwarded-proto']?.split(',')[0] ||
+    req.protocol ||
+    'https';
+
+  const forwardedHost =
+    req.headers['x-forwarded-host']?.split(',')[0] ||
+    req.get('host') ||
+    'url-shortener-blinkurl.onrender.com';
+
+  return normalizeBaseUrl(`${forwardedProto}://${forwardedHost}`);
+};
+
 module.exports = {
   generateShortCode,
   generateUniqueShortCode,
   isValidUrl,
   isStrongPassword,
+  getBaseUrl,
 };

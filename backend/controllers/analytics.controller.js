@@ -3,6 +3,7 @@
 
 const Url   = require('../models/Url.model');
 const Visit = require('../models/Visit.model');
+const { getBaseUrl } = require('../utils/helpers');
 
 // ─── GET /api/analytics/:id ───────────────────────────────────────────────────
 // Returns full analytics for a URL owned by the logged-in user.
@@ -27,6 +28,8 @@ const getAnalytics = async (req, res) => {
 
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const baseUrl = getBaseUrl(req);
 
     const dailyTrends = await Visit.aggregate([
       {
@@ -59,7 +62,6 @@ const getAnalytics = async (req, res) => {
       },
     ]);
 
-    const baseUrl  = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
     const shortUrl = `${baseUrl}/${url.customAlias || url.shortCode}`;
 
     res.json({
@@ -94,7 +96,7 @@ const getPublicAnalytics = async (req, res) => {
       return res.status(404).json({ success: false, message: 'URL not found.' });
     }
 
-    const baseUrl  = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const baseUrl = getBaseUrl(req);
     const shortUrl = `${baseUrl}/${url.customAlias || url.shortCode}`;
 
     res.json({
