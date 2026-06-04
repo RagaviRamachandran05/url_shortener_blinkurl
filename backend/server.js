@@ -6,8 +6,28 @@ const dotenv   = require('dotenv');
 dotenv.config();
 
 const app = express();
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://url-shortener-blinkurl.vercel.app',
+  'https://url-shortener-blinkurl-b6sr.vercel.app',
+  'https://url-shortener-blinkurl-e9qk-ilyqstp7g.vercel.app',
+].filter(Boolean);
+
 app.use(express.json());
-app.use(cors({ origin: process.env.FRONTEND_URL || '*', credentials: true }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || origin.startsWith('https://url-shortener-blinkurl')) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 const authRoutes      = require('./routes/auth.routes');
