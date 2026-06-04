@@ -20,9 +20,9 @@ app.use('/api/auth',      authRoutes);
 app.use('/api/url',       urlRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/profile',   profileRoutes);
-app.use('/',              redirectRoute);  // must be last
 
 app.get('/health', (req, res) => res.json({ status: 'OK' }));
+app.use('/',              redirectRoute);  // must be last
 app.use((req, res) => res.status(404).json({ success: false, message: 'Route not found' }));
 app.use((err, req, res, next) => {
   console.error(err);
